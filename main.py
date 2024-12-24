@@ -66,14 +66,11 @@ def get_output():
 
             base64_image = base64.b64encode(extracted_text)
             uploaded_image_url = upload_image(base64_image)
-            client = Client('manaidu20011/a')
+            client = Client("manaidu20011/mechanical-defects")
             extracted_text = client.predict(image_path=None,
                     image_url=uploaded_image_url, api_name='/predict')
-            text = extracted_text
-            client = Client("manaidu20011/cloud")
-            result = client.predict(command="predict"+extracted_text.replace("\n",":")[:-1],api_name="/predict")
-            extracted_text = (result + extracted_text).replace("\n", "<br>")
-            text= extracted_text
+            text = extracted_text.replace("\n", "<br>")
+            extracted_text = text
         except Exception as e:
             text = e
             extracted_text = \
@@ -83,110 +80,7 @@ def get_output():
     return render_template('index.html', extracted_text=extracted_text,
                            uploaded_image_url=uploaded_image_url,
                            prediction=text)
-@app.route('/submitDefect', methods=['GET', 'POST'])
-def submitDefect_get_output():
-    text = 'Upload image in any the following format : Png/Jpg/Jpeg'
-    extracted_text = ' '
-    if request.method == 'POST':
 
-        try:
-
-            extracted_text = request.files['my_image']
-            extracted_text = extracted_text.stream.read()
-
-            base64_image = base64.b64encode(extracted_text)
-            uploaded_image_url = upload_image(base64_image)
-            client = Client('manaidu20011/a')
-            extracted_text = client.predict(image_path=None,
-                    image_url=uploaded_image_url, api_name='/predict')
-            text = extracted_text
-            client = Client("manaidu20011/cloud")
-            result = client.predict(command=extracted_text.replace("\n",":")[:-1]+"1",api_name="/predict")
-            extracted_text = (result+ "\n"+ extracted_text).replace("\n", "<br>")
-            text= extracted_text
-        except Exception as e:
-            text = e
-            extracted_text = \
-                'Upload image in any the following format : Png/Jpg/Jpeg or Enter Text Here and click on Submit'
-            uploaded_image_url = ' '
-
-    return render_template('index.html', extracted_text=extracted_text,
-                           uploaded_image_url=uploaded_image_url,
-                           prediction=text)
-@app.route('/submitnotDefect', methods=['GET', 'POST'])
-def submitnotDefect_get_output():
-    text = 'Upload image in any the following format : Png/Jpg/Jpeg'
-    extracted_text = ' '
-    if request.method == 'POST':
-
-        try:
-
-            extracted_text = request.files['my_image']
-            extracted_text = extracted_text.stream.read()
-
-            base64_image = base64.b64encode(extracted_text)
-            uploaded_image_url = upload_image(base64_image)
-            client = Client('manaidu20011/a')
-            extracted_text = client.predict(image_path=None,
-                    image_url=uploaded_image_url, api_name='/predict')
-            text = extracted_text
-            client = Client("manaidu20011/cloud")
-            result = client.predict(command=extracted_text.replace("\n",":")[:-1]+"0",api_name="/predict")
-            extracted_text = (result+"\n" + extracted_text).replace("\n", "<br>")
-            text= extracted_text
-        except Exception as e:
-            text = e
-            extracted_text = \
-                'Upload image in any the following format : Png/Jpg/Jpeg or Enter Text Here and click on Submit'
-            uploaded_image_url = ' '
-
-    return render_template('index.html', extracted_text=extracted_text,
-                           uploaded_image_url=uploaded_image_url,
-                           prediction=text)
-@app.route('/del', methods=['GET', 'POST'])
-def del_data():
-    text = 'Upload image in any the following format : Png/Jpg/Jpeg'
-    extracted_text = ' '
-    if request.method == 'POST':
-
-        try:
-            client = Client("manaidu20011/cloud")
-            result = client.predict(command="delete",api_name="/predict")
-            extracted_text= "Data Removed"
-            text = extracted_text
-            uploaded_image_url= ""
-            
-        except Exception as e:
-            text = e
-            extracted_text = \
-                'Upload image in any the following format : Png/Jpg/Jpeg or Enter Text Here and click on Submit'
-            uploaded_image_url = ''
-
-    return render_template('index.html', extracted_text=extracted_text,
-                           uploaded_image_url=uploaded_image_url,
-                           prediction=text)
-@app.route('/train', methods=['GET', 'POST'])
-def train_data():
-    text = 'Upload image in any the following format : Png/Jpg/Jpeg'
-    extracted_text = ' '
-    if request.method == 'POST':
-
-        try:
-            client = Client("manaidu20011/cloud")
-            result = client.predict(command="train",api_name="/predict")
-            extracted_text= result
-            text = extracted_text
-            uploaded_image_url= ""
-            
-        except Exception as e:
-            text = e
-            extracted_text = \
-                'Upload image in any the following format : Png/Jpg/Jpeg or Enter Text Here and click on Submit'
-            uploaded_image_url = ' '
-
-    return render_template('index.html', extracted_text=extracted_text,
-                           uploaded_image_url=uploaded_image_url,
-                           prediction=text)
 
 
 if __name__ == '__main__':
