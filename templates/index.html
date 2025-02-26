@@ -51,8 +51,9 @@ function openWin() {
 
 
 	{% if prediction %}
-	
-  <img src="{{uploaded_image_url|safe}}" height="256px" width="256px"> -->
+	<div id="wrapper" style="width:100%; text-align:center">	 <img src="{{uploaded_image_url|safe}}" height="256px" width="256px"> </div>
+
+ 
     <!-- <p> Extracted Text  : <i> {{extracted_text}} </i></p>
 	<p><i> {{prediction}} </i></p>
     <span style="font-size: 20; margin: 21px 0; display: block;">
